@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    ports:
+      - "8086:8086"
+      - "50056:50056"
+    environment:
+      - SERVER_PORT=8086
+      - SERVER_GRPC_PORT=50056
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=qb_accounting
+      - DB_SSL_MODE=disable
+      - REDIS_ADDR=redis:6379
+      - REDIS_PASSWORD=password
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=qb_accounting
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../schema:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass password
+
+volumes:
+  postgres_data:

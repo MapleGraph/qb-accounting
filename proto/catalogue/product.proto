@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package catalogue;
+
+option go_package = "qb-accounting/internal/proto/catalogue";
+
+// ProductService provides gRPC methods for product operations
+service ProductService {
+    // GetProductsByIDs fetches products by their IDs
+    rpc GetProductsByIDs(GetProductsByIDsRequest) returns (GetProductsByIDsResponse);
+
+    // GetProductGroupsByIDs fetches product groups (lots/batches) by their IDs
+    rpc GetProductGroupsByIDs(GetProductGroupsByIDsRequest) returns (GetProductGroupsByIDsResponse);
+
+    // GetMeasurementUnits fetches measurement units for an organization
+    rpc GetMeasurementUnits(GetMeasurementUnitsRequest) returns (GetMeasurementUnitsResponse);
+}
+
+// GetProductsByIDsRequest is the request for fetching multiple products
+message GetProductsByIDsRequest {
+    string organization_id = 1;
+    repeated string product_ids = 2;
+}
+
+// GetProductsByIDsResponse is the response containing products
+message GetProductsByIDsResponse {
+    repeated Product products = 1;
+}
+
+// Product represents a product/item from the catalogue
+message Product {
+    string item_id = 1;
+    string organization_id = 2;
+
+    // Basic Information
+    string product_name = 3;
+    string product_type = 4;  // PRODUCT, SERVICE, BUNDLE, MODIFIER, GIFT_VOUCHER, MEMBERSHIP
+    optional string short_description = 5;
+    optional string long_description = 6;
+    repeated string images = 7;
+    optional string colour_code = 8;
+    optional string measurement_unit_id = 9;
+    optional string operational_unit_id = 10;
+
+    // Classification (as JSON string)
+    optional string classification = 11;
+
+    // Pricing
+    bool is_sellable_on_pos = 12;
+    bool allow_variable_pricing = 13;
+    bool price_includes_taxes = 14;
+    double default_selling_price = 15;
+    bool enable_product_group = 16;
+    optional string pricing_attribute = 17;  // JSON string
+
+    // Inventory
+    bool is_inventory_managed = 18;
+    optional string barcode = 19;
+    optional string sku = 20;
+    optional string dimension_unit = 21;
+    optional string packaging_info = 22;  // JSON string
+    optional string inventory_reduction_method = 23;  // DIRECT, INDIRECT
+    optional string recipe_id = 24;
+    optional int32 default_stock_alert_level = 25;
+    optional int32 default_safe_stock_level = 26;
+
+    // Billing & Compliance
+    optional string country_of_origin = 27;
+    optional string hsn_sac_code = 28;
+    bool disable_sales_on_no_stock = 29;
+    bool disable_sales_on_stock_expiry = 30;
+    optional string return_exchange = 31;  // JSON string
+
+    // Attributes
+    optional string attributes = 32;  // JSON string
+    optional string relationships = 33;  // JSON string
+    optional string item_type_attributes = 34;  // JSON string
+
+    // Audit fields
+    optional string created_by = 35;
+    optional string updated_by = 36;
+    string created_at_local = 37;
+    string created_at_utc = 38;
+    optional string updated_at_local = 39;
+    optional string updated_at_utc = 40;
+
+    // System fields
+    bool demo_mode = 41;
+    int32 is_active = 42;
+}
+
+message GetProductGroupsByIDsRequest {
+    string organization_id = 1;
+    repeated string product_group_ids = 2;
+}
+
+message GetProductGroupsByIDsResponse {
+    repeated ProductGroup product_groups = 1;
+}
+
+message ProductGroup {
+    string product_group_id = 1;
+    string organization_id = 2;
+    string product_group_name = 3;
+    string product_id = 4;
+    optional string short_description = 5;
+    optional string long_description = 6;
+    string pg_status = 7;
+    repeated string images = 8;
+    optional string pg_barcode = 9;
+    optional string pg_sku = 10;
+    optional string manufacturing_date = 11;
+    optional string expiry_date = 12;
+    optional int32 shelf_life = 13;
+    optional double cost_per_unit = 14;
+    optional string fulfillment_configuration = 15;
+    optional string attributes = 16;
+    optional string sell_by_date = 17;
+    optional double mrp = 18;
+    optional string return_configuration = 19;
+    optional string exchange_configuration = 20;
+    optional string created_at = 21;
+    optional string updated_at = 22;
+}
+
+message GetMeasurementUnitsRequest {
+    string organization_id = 1;
+}
+
+message GetMeasurementUnitsResponse {
+    repeated MeasurementUnit measurement_units = 1;
+}
+
+message MeasurementUnit {
+    string unit_id = 1;
+    string organization_id = 2;
+    optional string parent_unit_id = 3;
+    string name = 4;
+    string print_name = 5;
+    string description = 6;
+    bool is_uneditable = 7;
+    bool is_principal_unit = 8;
+    optional string conversion_factor = 9;
+    optional string created_at_local = 10;
+    optional string created_at_utc = 11;
+    optional string updated_at_local = 12;
+    optional string updated_at_utc = 13;
+    int32 is_active = 14;
+    bool demo_mode = 15;
+}

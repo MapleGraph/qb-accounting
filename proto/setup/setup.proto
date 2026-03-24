@@ -1,0 +1,126 @@
+syntax = "proto3";
+
+package qbsetup.v1;
+
+option go_package = "qb-accounting/internal/proto/setup";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
+
+// SetupService provides organization configuration from QB_Setup_Go
+service SetupService {
+  rpc OrganizationConfig(OrganizationConfigRequest) returns (OrganizationConfigResponse);
+}
+
+message OrganizationConfigRequest {
+  string organization_id = 1;
+}
+
+message SetupOrganizationResponse {
+  string organization_id = 1;
+  string organization_name = 2;
+  string organization_code = 3;
+  google.protobuf.Struct organization_reference = 4;
+  string organization_type = 5;
+  string brand_name = 6;
+  string brand_logo_url = 7;
+  string industry = 8;
+  google.protobuf.StringValue industry_sub_type = 9;
+  google.protobuf.StringValue org_secret_key = 10;
+  google.protobuf.Struct compliance_info = 11;
+  google.protobuf.StringValue business_segment = 12;
+  google.protobuf.StringValue business_origin = 13;
+  bool enable_mfa = 14;
+  google.protobuf.StringValue mfa_type = 15;
+  google.protobuf.StringValue mfa_sub_type = 16;
+  google.protobuf.StringValue start_date = 17;
+  google.protobuf.StringValue end_date = 18;
+  google.protobuf.StringValue date_of_incorporation = 19;
+  google.protobuf.StringValue timezone = 20;
+  string created_at_local = 21;
+  string created_at_utc = 22;
+  google.protobuf.StringValue updated_at_local = 23;
+  google.protobuf.StringValue updated_at_utc = 24;
+  bool demo_mode = 25;
+  int32 is_active = 26;
+}
+
+message SetupCompanyResponse {
+  string company_id = 1;
+  string organization_id = 2;
+  string company_name = 3;
+  google.protobuf.Struct company_reference = 4;
+  string company_type = 5;
+  google.protobuf.StringValue brand_name = 6;
+  google.protobuf.StringValue industry = 7;
+  google.protobuf.StringValue industry_sub_type = 8;
+  google.protobuf.Struct compliance_info = 9;
+  google.protobuf.StringValue start_date = 10;
+  google.protobuf.StringValue end_date = 11;
+  google.protobuf.StringValue date_of_incorporation = 12;
+  google.protobuf.StringValue timezone = 13;
+  string created_at_local = 14;
+  string created_at_utc = 15;
+  google.protobuf.StringValue updated_at_local = 16;
+  google.protobuf.StringValue updated_at_utc = 17;
+  bool demo_mode = 18;
+  int32 is_active = 19;
+}
+
+message SetupLocationResponse {
+  string location_id = 1;
+  string organization_id = 2;
+  string company_id = 3;
+  string location_name = 4;
+  google.protobuf.Struct location_reference = 5;
+  string location_type = 6;
+  google.protobuf.StringValue industry = 7;
+  google.protobuf.StringValue industry_sub_type = 8;
+  google.protobuf.Struct compliance_info = 9;
+  google.protobuf.StringValue start_date = 10;
+  google.protobuf.StringValue end_date = 11;
+  google.protobuf.StringValue timezone = 12;
+  string created_at_local = 13;
+  string created_at_utc = 14;
+  google.protobuf.StringValue updated_at_local = 15;
+  google.protobuf.StringValue updated_at_utc = 16;
+  bool demo_mode = 17;
+  int32 is_active = 18;
+}
+
+message SetupFeatureAccessResponse {
+  string access_id = 1;
+  string organization_id = 2;
+  string feature_id = 3;
+  string sub_feature_id = 4;
+  google.protobuf.Struct scopes = 5;
+  string created_at_local = 6;
+  string created_at_utc = 7;
+  google.protobuf.StringValue updated_at_local = 8;
+  google.protobuf.StringValue updated_at_utc = 9;
+  bool demo_mode = 10;
+  int32 is_active = 11;
+}
+
+message SetupFeatureConfigResponse {
+  string config_id = 1;
+  string entity_type = 2;
+  string entity_id = 3;
+  string organization_id = 4;
+  string sub_feature_id = 5;
+  google.protobuf.Struct settings = 6;
+  string created_at_local = 7;
+  string created_at_utc = 8;
+  google.protobuf.StringValue updated_at_local = 9;
+  google.protobuf.StringValue updated_at_utc = 10;
+  bool demo_mode = 11;
+  int32 is_active = 12;
+}
+
+message OrganizationConfigResponse {
+  SetupOrganizationResponse organization = 1;
+  repeated SetupCompanyResponse company = 2;
+  repeated SetupLocationResponse locations = 3;
+  repeated SetupFeatureAccessResponse feature_access = 4;
+  repeated SetupFeatureConfigResponse feature_configs = 5;
+}

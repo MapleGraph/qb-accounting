@@ -1,0 +1,2523 @@
+basePath: /api/public/accounting/v1
+definitions:
+  dto.AdjustmentRequest:
+    properties:
+      adjustment_date:
+        example: "2026-04-25T00:00:00Z"
+        type: string
+      adjustment_type:
+        enum:
+        - WRITE_OFF
+        - ROUND_OFF
+        - MANUAL_ADJUSTMENT
+        - FX_REVALUATION
+        example: WRITE_OFF
+        type: string
+      amount_base:
+        example: 500
+        type: number
+      amount_txn:
+        example: 500
+        type: number
+      notes:
+        example: Approved by CFO
+        maxLength: 2000
+        type: string
+      open_item_id:
+        example: 550e8400-e29b-41d4-a716-446655440180
+        type: string
+      reason_code:
+        example: BAD_DEBT
+        maxLength: 50
+        type: string
+    required:
+    - adjustment_date
+    - adjustment_type
+    - amount_base
+    - amount_txn
+    - open_item_id
+    type: object
+  dto.AllocationRequest:
+    properties:
+      allocation_amount_base:
+        example: 10000
+        type: number
+      allocation_amount_txn:
+        example: 10000
+        type: number
+      allocation_currency_code:
+        example: INR
+        type: string
+      allocation_date:
+        example: "2026-04-20T00:00:00Z"
+        type: string
+      from_open_item_id:
+        example: 550e8400-e29b-41d4-a716-446655440180
+        type: string
+      to_open_item_id:
+        example: 550e8400-e29b-41d4-a716-446655440181
+        type: string
+    required:
+    - allocation_amount_base
+    - allocation_amount_txn
+    - allocation_currency_code
+    - allocation_date
+    - from_open_item_id
+    - to_open_item_id
+    type: object
+  dto.CreateAccountGroupRequest:
+    properties:
+      account_nature:
+        enum:
+        - ASSET
+        - LIABILITY
+        - EQUITY
+        - INCOME
+        - EXPENSE
+        example: ASSET
+        type: string
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      code:
+        example: CA
+        maxLength: 30
+        type: string
+      is_system:
+        example: false
+        type: boolean
+      name:
+        example: Current Assets
+        maxLength: 200
+        type: string
+      parent_group_id:
+        example: 550e8400-e29b-41d4-a716-446655440040
+        type: string
+      sort_order:
+        example: 10
+        minimum: 0
+        type: integer
+    required:
+    - account_nature
+    - book_id
+    - code
+    - name
+    - sort_order
+    type: object
+  dto.CreateAccountRequest:
+    properties:
+      account_nature:
+        enum:
+        - ASSET
+        - LIABILITY
+        - EQUITY
+        - INCOME
+        - EXPENSE
+        example: ASSET
+        type: string
+      allow_manual_posting:
+        example: true
+        type: boolean
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      code:
+        example: "110010"
+        maxLength: 50
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      control_type:
+        example: CASH
+        maxLength: 50
+        type: string
+      display_name:
+        example: Cash
+        maxLength: 200
+        type: string
+      group_id:
+        example: 550e8400-e29b-41d4-a716-446655440050
+        type: string
+      is_active:
+        example: true
+        type: boolean
+      is_system:
+        example: false
+        type: boolean
+      name:
+        example: Cash on Hand
+        maxLength: 200
+        type: string
+      normal_balance:
+        enum:
+        - D
+        - C
+        example: D
+        type: string
+      parent_account_id:
+        example: 550e8400-e29b-41d4-a716-446655440060
+        type: string
+      require_branch:
+        example: false
+        type: boolean
+      require_cost_center:
+        example: false
+        type: boolean
+      require_employee:
+        example: false
+        type: boolean
+      require_party:
+        example: false
+        type: boolean
+      require_tax_breakup:
+        example: false
+        type: boolean
+      usage:
+        enum:
+        - HEADER
+        - POSTABLE
+        example: POSTABLE
+        type: string
+    required:
+    - account_nature
+    - book_id
+    - code
+    - company_id
+    - group_id
+    - name
+    - normal_balance
+    - usage
+    type: object
+  dto.CreateAccountingPeriodRequest:
+    properties:
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      end_date:
+        example: "2026-04-30T23:59:59Z"
+        type: string
+      fiscal_year_id:
+        example: 550e8400-e29b-41d4-a716-446655440020
+        type: string
+      is_adjustment_period:
+        example: false
+        type: boolean
+      period_name:
+        example: Apr 2026
+        maxLength: 120
+        type: string
+      period_no:
+        example: 1
+        minimum: 1
+        type: integer
+      start_date:
+        example: "2026-04-01T00:00:00Z"
+        type: string
+      status:
+        enum:
+        - DRAFT
+        - OPEN
+        - SOFT_LOCKED
+        - HARD_LOCKED
+        - CLOSED
+        example: DRAFT
+        type: string
+    required:
+    - book_id
+    - company_id
+    - end_date
+    - fiscal_year_id
+    - period_name
+    - period_no
+    - start_date
+    type: object
+  dto.CreateBookRequest:
+    properties:
+      base_currency_code:
+        example: INR
+        type: string
+      book_type:
+        enum:
+        - PRIMARY
+        - STATUTORY
+        - MANAGEMENT
+        example: PRIMARY
+        type: string
+      code:
+        example: PRIMARY
+        maxLength: 30
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      name:
+        example: Primary Book
+        maxLength: 120
+        type: string
+      reporting_currency_code:
+        example: USD
+        type: string
+    required:
+    - base_currency_code
+    - book_type
+    - code
+    - company_id
+    - name
+    type: object
+  dto.CreateFiscalYearRequest:
+    properties:
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      code:
+        example: FY2026
+        maxLength: 30
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      end_date:
+        example: "2027-03-31T23:59:59Z"
+        type: string
+      name:
+        example: FY 2026-27
+        maxLength: 200
+        type: string
+      start_date:
+        example: "2026-04-01T00:00:00Z"
+        type: string
+      status:
+        enum:
+        - DRAFT
+        - OPEN
+        - CLOSED
+        - ARCHIVED
+        example: DRAFT
+        type: string
+    required:
+    - book_id
+    - code
+    - company_id
+    - end_date
+    - name
+    - start_date
+    type: object
+  dto.CreateJournalBatchRequest:
+    properties:
+      batch_no:
+        example: BATCH-20260415-001
+        maxLength: 50
+        type: string
+      batch_type:
+        example: SALARY_POSTING
+        maxLength: 50
+        type: string
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      narration:
+        example: April payroll run
+        maxLength: 2000
+        type: string
+      posting_date:
+        example: "2026-04-15T00:00:00Z"
+        type: string
+      source_module:
+        example: PAYROLL
+        maxLength: 50
+        type: string
+    required:
+    - batch_no
+    - batch_type
+    - book_id
+    - company_id
+    - posting_date
+    type: object
+  dto.CreateJournalRequest:
+    properties:
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      currency_code:
+        example: INR
+        type: string
+      exchange_rate:
+        example: 1
+        minimum: 0
+        type: number
+      fiscal_year_id:
+        example: 550e8400-e29b-41d4-a716-446655440020
+        type: string
+      idempotency_key:
+        example: inv-2026-001-post
+        maxLength: 200
+        type: string
+      journal_date:
+        example: "2026-04-15T00:00:00Z"
+        type: string
+      journal_kind:
+        enum:
+        - MANUAL
+        - OPENING
+        - ADJUSTMENT
+        - REVERSAL
+        - SYSTEM
+        - CLOSING
+        example: MANUAL
+        type: string
+      lines:
+        items:
+          $ref: '#/definitions/dto.JournalLineRequest'
+        minItems: 1
+        type: array
+      narration:
+        example: Monthly accruals
+        maxLength: 2000
+        type: string
+      period_id:
+        example: 550e8400-e29b-41d4-a716-446655440030
+        type: string
+      posting_date:
+        example: "2026-04-15T00:00:00Z"
+        type: string
+      reference_no:
+        example: REF-7788
+        maxLength: 80
+        type: string
+      source_document_id:
+        example: 550e8400-e29b-41d4-a716-446655440100
+        type: string
+      source_document_type:
+        example: INVOICE
+        maxLength: 80
+        type: string
+      source_event_id:
+        example: 550e8400-e29b-41d4-a716-446655440101
+        type: string
+      source_module:
+        example: BILLING
+        maxLength: 50
+        type: string
+    required:
+    - book_id
+    - company_id
+    - currency_code
+    - exchange_rate
+    - fiscal_year_id
+    - journal_date
+    - journal_kind
+    - lines
+    - period_id
+    - posting_date
+    type: object
+  dto.CreateOpenItemRequest:
+    properties:
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      control_account_id:
+        example: 550e8400-e29b-41d4-a716-446655440070
+        type: string
+      currency_code:
+        example: INR
+        type: string
+      document_date:
+        example: "2026-04-10T00:00:00Z"
+        type: string
+      document_no:
+        example: INV-1024
+        maxLength: 80
+        type: string
+      due_date:
+        example: "2026-05-10T00:00:00Z"
+        type: string
+      exchange_rate:
+        example: 1
+        minimum: 0
+        type: number
+      item_side:
+        enum:
+        - RECEIVABLE
+        - PAYABLE
+        example: RECEIVABLE
+        type: string
+      journal_id:
+        example: 550e8400-e29b-41d4-a716-446655440110
+        type: string
+      original_amount_base:
+        example: 50000
+        type: number
+      original_amount_txn:
+        example: 50000
+        type: number
+      party_id:
+        example: 550e8400-e29b-41d4-a716-446655440170
+        type: string
+      party_type:
+        enum:
+        - CUSTOMER
+        - VENDOR
+        - PARTY
+        - EMPLOYEE
+        - OTHER
+        example: CUSTOMER
+        type: string
+      source_document_id:
+        example: 550e8400-e29b-41d4-a716-446655440100
+        type: string
+      source_document_type:
+        example: INVOICE
+        maxLength: 80
+        type: string
+      source_module:
+        example: BILLING
+        maxLength: 50
+        type: string
+    required:
+    - book_id
+    - company_id
+    - control_account_id
+    - currency_code
+    - document_date
+    - document_no
+    - exchange_rate
+    - item_side
+    - journal_id
+    - original_amount_base
+    - original_amount_txn
+    - party_id
+    - party_type
+    - source_document_id
+    - source_document_type
+    - source_module
+    type: object
+  dto.CreatePostingRequest:
+    properties:
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      idempotency_key:
+        example: billing:inv:550e8400-e29b-41d4-a716-446655440100:v1
+        maxLength: 200
+        type: string
+      request_payload:
+        type: object
+      requested_posting_date:
+        example: "2026-04-15T00:00:00Z"
+        type: string
+      source_document_id:
+        example: 550e8400-e29b-41d4-a716-446655440100
+        type: string
+      source_document_type:
+        example: INVOICE
+        maxLength: 80
+        type: string
+      source_event_id:
+        example: 550e8400-e29b-41d4-a716-446655440101
+        type: string
+      source_module:
+        example: BILLING
+        maxLength: 50
+        type: string
+    required:
+    - book_id
+    - company_id
+    - idempotency_key
+    - request_payload
+    - requested_posting_date
+    - source_document_id
+    - source_document_type
+    - source_event_id
+    - source_module
+    type: object
+  dto.CreatePostingRuleVersionRequest:
+    properties:
+      effective_from:
+        example: "2026-04-01T00:00:00Z"
+        type: string
+      effective_to:
+        example: "2027-03-31T23:59:59Z"
+        type: string
+      name:
+        example: Default invoice posting
+        maxLength: 200
+        type: string
+      notes:
+        example: Initial version
+        maxLength: 2000
+        type: string
+      rule_payload:
+        type: object
+      source_document_type:
+        example: INVOICE
+        maxLength: 80
+        type: string
+      source_module:
+        example: BILLING
+        maxLength: 50
+        type: string
+      status:
+        enum:
+        - DRAFT
+        - ACTIVE
+        - RETIRED
+        example: DRAFT
+        type: string
+      version_no:
+        example: 1
+        minimum: 1
+        type: integer
+    required:
+    - effective_from
+    - name
+    - rule_payload
+    - source_document_type
+    - source_module
+    - version_no
+    type: object
+  dto.CreateVoucherSequenceRequest:
+    properties:
+      book_id:
+        example: 550e8400-e29b-41d4-a716-446655440010
+        type: string
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      company_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      is_active:
+        example: true
+        type: boolean
+      next_number:
+        example: 1
+        minimum: 1
+        type: integer
+      padding:
+        example: 6
+        maximum: 12
+        minimum: 1
+        type: integer
+      prefix:
+        example: JV-
+        maxLength: 20
+        type: string
+      reset_policy:
+        enum:
+        - FY
+        - NEVER
+        example: FY
+        type: string
+      suffix:
+        example: -FY26
+        maxLength: 20
+        type: string
+      voucher_type:
+        enum:
+        - JV
+        - RV
+        - PV
+        - SV
+        example: JV
+        type: string
+    required:
+    - book_id
+    - company_id
+    - next_number
+    - padding
+    - reset_policy
+    - voucher_type
+    type: object
+  dto.JournalLineRequest:
+    properties:
+      account_id:
+        example: 550e8400-e29b-41d4-a716-446655440070
+        type: string
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      cost_center_id:
+        example: 550e8400-e29b-41d4-a716-446655440083
+        type: string
+      credit_amount_base:
+        example: 0
+        minimum: 0
+        type: number
+      credit_amount_txn:
+        example: 0
+        minimum: 0
+        type: number
+      debit_amount_base:
+        example: 10000.5
+        minimum: 0
+        type: number
+      debit_amount_txn:
+        example: 10000.5
+        minimum: 0
+        type: number
+      description:
+        example: Rent expense
+        maxLength: 500
+        type: string
+      employee_id:
+        example: 550e8400-e29b-41d4-a716-446655440082
+        type: string
+      exchange_rate:
+        example: 1
+        minimum: 0
+        type: number
+      income_head_id:
+        example: 550e8400-e29b-41d4-a716-446655440084
+        type: string
+      party_id:
+        example: 550e8400-e29b-41d4-a716-446655440081
+        type: string
+      tax_code_id:
+        example: 550e8400-e29b-41d4-a716-446655440085
+        type: string
+    required:
+    - account_id
+    type: object
+  dto.PostJournalRequest:
+    properties:
+      journal_id:
+        example: 550e8400-e29b-41d4-a716-446655440110
+        type: string
+      posting_date:
+        example: "2026-04-16T00:00:00Z"
+        type: string
+    required:
+    - journal_id
+    type: object
+  dto.ReverseJournalRequest:
+    properties:
+      journal_id:
+        example: 550e8400-e29b-41d4-a716-446655440110
+        type: string
+      narration:
+        example: Reversal of incorrect accrual
+        maxLength: 2000
+        type: string
+      reversal_date:
+        example: "2026-04-20T00:00:00Z"
+        type: string
+    required:
+    - journal_id
+    type: object
+  dto.UpdateAccountGroupRequest:
+    properties:
+      name:
+        example: Current Assets (Operating)
+        maxLength: 200
+        type: string
+      parent_group_id:
+        example: 550e8400-e29b-41d4-a716-446655440040
+        type: string
+      sort_order:
+        example: 15
+        minimum: 0
+        type: integer
+    type: object
+  dto.UpdateAccountRequest:
+    properties:
+      allow_manual_posting:
+        example: true
+        type: boolean
+      control_type:
+        example: CASH
+        maxLength: 50
+        type: string
+      display_name:
+        example: Petty Cash
+        maxLength: 200
+        type: string
+      is_active:
+        example: true
+        type: boolean
+      name:
+        example: Cash on Hand — Main
+        maxLength: 200
+        type: string
+      parent_account_id:
+        example: 550e8400-e29b-41d4-a716-446655440060
+        type: string
+      require_branch:
+        example: false
+        type: boolean
+      require_cost_center:
+        example: false
+        type: boolean
+      require_employee:
+        example: false
+        type: boolean
+      require_party:
+        example: false
+        type: boolean
+      require_tax_breakup:
+        example: false
+        type: boolean
+    type: object
+  dto.UpdateAccountingPeriodRequest:
+    properties:
+      apply_hard_lock:
+        example: false
+        type: boolean
+      apply_soft_lock:
+        example: true
+        type: boolean
+      closed_by:
+        example: 550e8400-e29b-41d4-a716-446655440099
+        type: string
+      hard_locked_by:
+        example: 550e8400-e29b-41d4-a716-446655440099
+        type: string
+      lock_reason:
+        example: Month-end close
+        maxLength: 500
+        type: string
+      period_name:
+        example: April 2026
+        maxLength: 120
+        type: string
+      release_hard_lock:
+        example: false
+        type: boolean
+      release_soft_lock:
+        example: false
+        type: boolean
+      soft_locked_by:
+        example: 550e8400-e29b-41d4-a716-446655440099
+        type: string
+      status:
+        enum:
+        - DRAFT
+        - OPEN
+        - SOFT_LOCKED
+        - HARD_LOCKED
+        - CLOSED
+        example: OPEN
+        type: string
+    type: object
+  dto.UpdateBookRequest:
+    properties:
+      name:
+        example: Primary Book Updated
+        maxLength: 120
+        type: string
+      reporting_currency_code:
+        example: USD
+        type: string
+      status:
+        enum:
+        - ACTIVE
+        - INACTIVE
+        example: ACTIVE
+        type: string
+    type: object
+  dto.UpdateFiscalYearRequest:
+    properties:
+      end_date:
+        example: "2027-03-31T23:59:59Z"
+        type: string
+      name:
+        example: FY 2026-27 (revised)
+        maxLength: 200
+        type: string
+      status:
+        enum:
+        - DRAFT
+        - OPEN
+        - CLOSED
+        - ARCHIVED
+        example: OPEN
+        type: string
+    type: object
+  dto.UpdateJournalBatchRequest:
+    properties:
+      batch_type:
+        example: SALARY_POSTING
+        maxLength: 50
+        type: string
+      narration:
+        example: April payroll (corrected)
+        maxLength: 2000
+        type: string
+      posting_date:
+        example: "2026-04-16T00:00:00Z"
+        type: string
+      source_module:
+        example: PAYROLL
+        maxLength: 50
+        type: string
+      status:
+        enum:
+        - OPEN
+        - POSTED
+        - FAILED
+        - CANCELLED
+        example: POSTED
+        type: string
+    type: object
+  dto.UpdateOpenItemRequest:
+    properties:
+      due_date:
+        example: "2026-06-10T00:00:00Z"
+        type: string
+      item_status:
+        enum:
+        - OPEN
+        - PARTIALLY_ALLOCATED
+        - SETTLED
+        - WRITTEN_OFF
+        - CANCELLED
+        example: PARTIALLY_ALLOCATED
+        type: string
+      remarks:
+        example: Customer promised partial payment
+        maxLength: 2000
+        type: string
+    type: object
+  dto.UpdatePostingRuleVersionRequest:
+    properties:
+      effective_to:
+        example: "2027-03-31T23:59:59Z"
+        type: string
+      name:
+        example: Default invoice posting (v2)
+        maxLength: 200
+        type: string
+      notes:
+        example: Added tax split
+        maxLength: 2000
+        type: string
+      rule_payload:
+        type: object
+      status:
+        enum:
+        - DRAFT
+        - ACTIVE
+        - RETIRED
+        example: ACTIVE
+        type: string
+    type: object
+  dto.UpdateVoucherSequenceRequest:
+    properties:
+      branch_id:
+        example: 550e8400-e29b-41d4-a716-446655440080
+        type: string
+      is_active:
+        example: true
+        type: boolean
+      next_number:
+        example: 42
+        minimum: 1
+        type: integer
+      padding:
+        example: 6
+        maximum: 12
+        minimum: 1
+        type: integer
+      prefix:
+        example: JV-
+        maxLength: 20
+        type: string
+      reset_policy:
+        enum:
+        - FY
+        - NEVER
+        example: NEVER
+        type: string
+      suffix:
+        example: -FY26
+        maxLength: 20
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      data: {}
+      error:
+        items:
+          type: string
+        type: array
+      message:
+        type: string
+      status:
+        type: boolean
+      status_code:
+        type: integer
+    type: object
+host: localhost:8086
+info:
+  contact:
+    email: support@queuebuster.co
+    name: API Support
+    url: http://www.queuebuster.co/support
+  description: Enterprise accounting module for QueueBuster ERP
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: QB Accounting Service API
+  version: 1.0.0
+paths:
+  /account-groups:
+    post:
+      consumes:
+      - application/json
+      description: Create a new account group under a book
+      parameters:
+      - description: Account group data
+        in: body
+        name: account_group
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateAccountGroupRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create an account group
+      tags:
+      - account-groups
+  /account-groups/{id}:
+    delete:
+      description: Delete an account group
+      parameters:
+      - description: Account group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete an account group
+      tags:
+      - account-groups
+    get:
+      description: Get an account group by ID
+      parameters:
+      - description: Account group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get an account group
+      tags:
+      - account-groups
+    put:
+      consumes:
+      - application/json
+      description: Update an account group
+      parameters:
+      - description: Account group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Account group fields
+        in: body
+        name: account_group
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAccountGroupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update an account group
+      tags:
+      - account-groups
+  /account-groups/book/{book_id}:
+    get:
+      description: List account groups for a book
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List account groups by book
+      tags:
+      - account-groups
+  /accounting-periods:
+    post:
+      consumes:
+      - application/json
+      description: Create a new accounting period
+      parameters:
+      - description: Period data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateAccountingPeriodRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create an accounting period
+      tags:
+      - accounting-periods
+  /accounting-periods/{id}:
+    delete:
+      parameters:
+      - description: Period ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+      summary: Delete an accounting period
+      tags:
+      - accounting-periods
+    get:
+      parameters:
+      - description: Period ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get an accounting period
+      tags:
+      - accounting-periods
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Period ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updates
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAccountingPeriodRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update an accounting period
+      tags:
+      - accounting-periods
+  /accounting-periods/book/{book_id}:
+    get:
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List accounting periods by book
+      tags:
+      - accounting-periods
+  /accounting-periods/fiscal-year/{fiscal_year_id}:
+    get:
+      parameters:
+      - description: Fiscal year ID
+        in: path
+        name: fiscal_year_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List accounting periods by fiscal year
+      tags:
+      - accounting-periods
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: Create a new ledger account
+      parameters:
+      - description: Account data
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create an account
+      tags:
+      - accounts
+  /accounts/{id}:
+    delete:
+      description: Delete an account
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete an account
+      tags:
+      - accounts
+    get:
+      description: Get an account by ID
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get an account
+      tags:
+      - accounts
+    put:
+      consumes:
+      - application/json
+      description: Update an account
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Account fields
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update an account
+      tags:
+      - accounts
+  /accounts/book/{book_id}:
+    get:
+      description: List accounts for an accounting book
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List accounts by book
+      tags:
+      - accounts
+  /accounts/company/{company_id}:
+    get:
+      description: List accounts for a company
+      parameters:
+      - description: Company ID
+        in: path
+        name: company_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List accounts by company
+      tags:
+      - accounts
+  /books:
+    post:
+      consumes:
+      - application/json
+      description: Create a new accounting book for a company
+      parameters:
+      - description: Book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBookRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a book
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      description: Delete an accounting book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a book
+      tags:
+      - books
+    get:
+      description: Get an accounting book by ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a book
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Update an accounting book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Book fields
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateBookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update a book
+      tags:
+      - books
+  /books/company/{company_id}:
+    get:
+      description: List all accounting books for a company
+      parameters:
+      - description: Company ID
+        in: path
+        name: company_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List books by company
+      tags:
+      - books
+  /fiscal-years:
+    post:
+      consumes:
+      - application/json
+      description: Create a new fiscal year for a book
+      parameters:
+      - description: Fiscal year data
+        in: body
+        name: fiscal_year
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateFiscalYearRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a fiscal year
+      tags:
+      - fiscal-years
+  /fiscal-years/{id}:
+    delete:
+      description: Delete a fiscal year
+      parameters:
+      - description: Fiscal year ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a fiscal year
+      tags:
+      - fiscal-years
+    get:
+      description: Get a fiscal year by ID
+      parameters:
+      - description: Fiscal year ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a fiscal year
+      tags:
+      - fiscal-years
+    put:
+      consumes:
+      - application/json
+      description: Update a fiscal year
+      parameters:
+      - description: Fiscal year ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Fiscal year fields
+        in: body
+        name: fiscal_year
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateFiscalYearRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update a fiscal year
+      tags:
+      - fiscal-years
+  /fiscal-years/book/{book_id}:
+    get:
+      description: List fiscal years for an accounting book
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List fiscal years by book
+      tags:
+      - fiscal-years
+  /journal-batches:
+    post:
+      consumes:
+      - application/json
+      description: Create a new journal batch
+      parameters:
+      - description: Journal batch data
+        in: body
+        name: journal_batch
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateJournalBatchRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a journal batch
+      tags:
+      - journal-batches
+  /journal-batches/{id}:
+    delete:
+      description: Delete a journal batch
+      parameters:
+      - description: Journal batch ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a journal batch
+      tags:
+      - journal-batches
+    get:
+      description: Get a journal batch by ID
+      parameters:
+      - description: Journal batch ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a journal batch
+      tags:
+      - journal-batches
+    put:
+      consumes:
+      - application/json
+      description: Update a journal batch
+      parameters:
+      - description: Journal batch ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Journal batch fields
+        in: body
+        name: journal_batch
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateJournalBatchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update a journal batch
+      tags:
+      - journal-batches
+  /journal-batches/book/{book_id}:
+    get:
+      description: List journal batches for a book
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List journal batches by book
+      tags:
+      - journal-batches
+  /journals:
+    post:
+      consumes:
+      - application/json
+      description: Create a new journal (typically draft)
+      parameters:
+      - description: Journal data with lines
+        in: body
+        name: journal
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateJournalRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a journal
+      tags:
+      - journals
+  /journals/{id}:
+    delete:
+      description: Delete a journal
+      parameters:
+      - description: Journal ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a journal
+      tags:
+      - journals
+    get:
+      description: Get a journal by ID; set include_lines=true to load journal lines
+      parameters:
+      - description: Journal ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Include journal lines
+        in: query
+        name: include_lines
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a journal
+      tags:
+      - journals
+  /journals/book/{book_id}:
+    get:
+      description: List journals for an accounting book
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List journals by book
+      tags:
+      - journals
+  /journals/period/{period_id}:
+    get:
+      description: List journals for an accounting period
+      parameters:
+      - description: Accounting period ID
+        in: path
+        name: period_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List journals by period
+      tags:
+      - journals
+  /journals/post:
+    post:
+      consumes:
+      - application/json
+      description: Post a draft journal to the ledger
+      parameters:
+      - description: Post journal request
+        in: body
+        name: journal
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PostJournalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Post a journal
+      tags:
+      - journals
+  /journals/reverse:
+    post:
+      consumes:
+      - application/json
+      description: Create a reversing journal entry for a posted journal
+      parameters:
+      - description: Reverse journal request
+        in: body
+        name: journal
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ReverseJournalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Reverse a journal
+      tags:
+      - journals
+  /open-items:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Open item
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateOpenItemRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create an open item
+      tags:
+      - open-items
+  /open-items/{id}:
+    delete:
+      parameters:
+      - description: Open item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+      summary: Delete an open item
+      tags:
+      - open-items
+    get:
+      parameters:
+      - description: Open item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get an open item
+      tags:
+      - open-items
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Open item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updates
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateOpenItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update an open item
+      tags:
+      - open-items
+  /open-items/adjustments:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Adjustment
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AdjustmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create an open item adjustment
+      tags:
+      - open-items
+  /open-items/allocate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Allocation
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AllocationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Allocate between open items
+      tags:
+      - open-items
+  /open-items/book/{book_id}:
+    get:
+      parameters:
+      - description: Book ID
+        in: path
+        name: book_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List open items by book
+      tags:
+      - open-items
+  /open-items/party/{party_id}:
+    get:
+      parameters:
+      - description: Party ID
+        in: path
+        name: party_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: List open items by party
+      tags:
+      - open-items
+  /posting-requests:
+    post:
+      consumes:
+      - application/json
+      description: Enqueue a posting request from a source document
+      parameters:
+      - description: Posting request data
+        in: body
+        name: posting_request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePostingRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a posting request
+      tags:
+      - posting-requests
+  /posting-requests/{id}:
+    get:
+      description: Get a posting request by ID
+      parameters:
+      - description: Posting request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a posting request
+      tags:
+      - posting-requests
+  /posting-rules:
+    post:
+      consumes:
+      - application/json
+      description: Create a new posting rule version for a source document type
+      parameters:
+      - description: Posting rule version data
+        in: body
+        name: posting_rule
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePostingRuleVersionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a posting rule version
+      tags:
+      - posting-rules
+  /posting-rules/{id}:
+    delete:
+      description: Delete a posting rule version
+      parameters:
+      - description: Posting rule version ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a posting rule version
+      tags:
+      - posting-rules
+    get:
+      description: Get a posting rule version by ID
+      parameters:
+      - description: Posting rule version ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a posting rule version
+      tags:
+      - posting-rules
+    put:
+      consumes:
+      - application/json
+      description: Update a posting rule version
+      parameters:
+      - description: Posting rule version ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Posting rule version fields
+        in: body
+        name: posting_rule
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePostingRuleVersionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update a posting rule version
+      tags:
+      - posting-rules
+  /voucher-sequences:
+    post:
+      consumes:
+      - application/json
+      description: Create a new voucher numbering sequence
+      parameters:
+      - description: Voucher sequence data
+        in: body
+        name: voucher_sequence
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateVoucherSequenceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a voucher sequence
+      tags:
+      - voucher-sequences
+  /voucher-sequences/{id}:
+    delete:
+      description: Delete a voucher sequence
+      parameters:
+      - description: Voucher sequence ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a voucher sequence
+      tags:
+      - voucher-sequences
+    get:
+      description: Get a voucher sequence by ID
+      parameters:
+      - description: Voucher sequence ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a voucher sequence
+      tags:
+      - voucher-sequences
+    put:
+      consumes:
+      - application/json
+      description: Update a voucher sequence
+      parameters:
+      - description: Voucher sequence ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Voucher sequence fields
+        in: body
+        name: voucher_sequence
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateVoucherSequenceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update a voucher sequence
+      tags:
+      - voucher-sequences
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

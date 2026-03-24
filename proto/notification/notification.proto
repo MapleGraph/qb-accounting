@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package notifications.v1;
+
+option go_package = "qb-accounting/internal/proto/notification";
+
+// NotificationService provides SMS and Email services from QB-Notification-Go
+service NotificationService {
+  rpc SendSMS(SendSMSRequest) returns (SendSMSResponse);
+  rpc SendEmail(SendEmailRequest) returns (SendEmailResponse);
+}
+
+message SendSMSRequest {
+  string to = 1;           // Recipient phone number
+  string template_id = 2;  // Template identifier (templateKey from templates JSON)
+  map<string, string> variables = 3; // Variables to fill in the template
+}
+
+message SendSMSResponse {
+  string message_id = 1;   // Message ID from the SMS provider
+  bool success = 2;        // Whether the operation was successful
+  string error = 3;        // Error message if success is false
+}
+
+message SendEmailRequest {
+  repeated string to = 1;           // Recipient email addresses
+  repeated string cc = 2;           // CC email addresses (optional)
+  repeated string bcc = 3;          // BCC email addresses (optional)
+  string subject = 4;               // Email subject
+  string template_id = 5;           // Template identifier
+  map<string, string> variables = 6; // Variables to fill in the template
+  bool is_custom_mail = 7;          // Whether this is a custom mail
+  string mail_content = 8;          // Custom HTML content (required if is_custom_mail is true)
+}
+
+message SendEmailResponse {
+  string message_id = 1;   // Message ID from the email provider
+  bool success = 2;        // Whether the operation was successful
+  string error = 3;        // Error message if success is false
+}
