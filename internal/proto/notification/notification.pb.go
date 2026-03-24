@@ -339,7 +339,7 @@ const file_notification_proto_rawDesc = "" +
 	"\x05error\x18\x03 \x01(\tR\x05error2\xbb\x01\n" +
 	"\x13NotificationService\x12N\n" +
 	"\aSendSMS\x12 .notifications.v1.SendSMSRequest\x1a!.notifications.v1.SendSMSResponse\x12T\n" +
-	"\tSendEmail\x12\".notifications.v1.SendEmailRequest\x1a#.notifications.v1.SendEmailResponseB(Z&qb-accounting/internal/proto/notificationb\x06proto3"
+	"\tSendEmail\x12\".notifications.v1.SendEmailRequest\x1a#.notifications.v1.SendEmailResponseB+Z)qb-accounting/internal/proto/notificationb\x06proto3"
 
 var (
 	file_notification_proto_rawDescOnce sync.Once

@@ -26,7 +26,7 @@ type bookRepository struct {
 }
 
 func NewBookRepository(db qbpostgres.DBHandler) (repository.BookRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.Book](db, "qb_accounting.books")
+	repo, err := qbpostgres.NewRepository[models.Book](db, "books")
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ type fiscalYearRepository struct {
 }
 
 func NewFiscalYearRepository(db qbpostgres.DBHandler) (repository.FiscalYearRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.FiscalYear](db, "qb_accounting.fiscal_years")
+	repo, err := qbpostgres.NewRepository[models.FiscalYear](db, "fiscal_years")
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +124,7 @@ type accountingPeriodRepository struct {
 }
 
 func NewAccountingPeriodRepository(db qbpostgres.DBHandler) (repository.AccountingPeriodRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.AccountingPeriod](db, "qb_accounting.accounting_periods")
+	repo, err := qbpostgres.NewRepository[models.AccountingPeriod](db, "accounting_periods")
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ type accountGroupRepository struct {
 }
 
 func NewAccountGroupRepository(db qbpostgres.DBHandler) (repository.AccountGroupRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.AccountGroup](db, "qb_accounting.account_groups")
+	repo, err := qbpostgres.NewRepository[models.AccountGroup](db, "account_groups")
 	if err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ type accountRepository struct {
 }
 
 func NewAccountRepository(db qbpostgres.DBHandler) (repository.AccountRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.Account](db, "qb_accounting.accounts")
+	repo, err := qbpostgres.NewRepository[models.Account](db, "accounts")
 	if err != nil {
 		return nil, err
 	}
@@ -311,7 +311,7 @@ type voucherSequenceRepository struct {
 }
 
 func NewVoucherSequenceRepository(db qbpostgres.DBHandler) (repository.VoucherSequenceRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.VoucherSequence](db, "qb_accounting.voucher_sequences")
+	repo, err := qbpostgres.NewRepository[models.VoucherSequence](db, "voucher_sequences")
 	if err != nil {
 		return nil, err
 	}
@@ -351,7 +351,7 @@ func (r *voucherSequenceRepository) GetByBookIDAndVoucherType(ctx context.Contex
 // (same pattern as qb-billing transaction series; qb-core UpdatePartial cannot express column increments).
 func (r *voucherSequenceRepository) GetNextSequence(ctx context.Context, id string) (int64, error) {
 	query := `
-		UPDATE qb_accounting.voucher_sequences
+		UPDATE voucher_sequences
 		SET next_number = next_number + 1
 		WHERE id = $1
 		RETURNING next_number - 1
@@ -383,7 +383,7 @@ type journalBatchRepository struct {
 }
 
 func NewJournalBatchRepository(db qbpostgres.DBHandler) (repository.JournalBatchRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.JournalBatch](db, "qb_accounting.journal_batches")
+	repo, err := qbpostgres.NewRepository[models.JournalBatch](db, "journal_batches")
 	if err != nil {
 		return nil, err
 	}
@@ -436,7 +436,7 @@ type journalRepository struct {
 }
 
 func NewJournalRepository(db qbpostgres.DBHandler) (repository.JournalRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.Journal](db, "qb_accounting.journals")
+	repo, err := qbpostgres.NewRepository[models.Journal](db, "journals")
 	if err != nil {
 		return nil, err
 	}
@@ -518,7 +518,7 @@ type journalLineRepository struct {
 }
 
 func NewJournalLineRepository(db qbpostgres.DBHandler) (repository.JournalLineRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.JournalLine](db, "qb_accounting.journal_lines")
+	repo, err := qbpostgres.NewRepository[models.JournalLine](db, "journal_lines")
 	if err != nil {
 		return nil, err
 	}
@@ -559,7 +559,7 @@ type postingRuleVersionRepository struct {
 }
 
 func NewPostingRuleVersionRepository(db qbpostgres.DBHandler) (repository.PostingRuleVersionRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.PostingRuleVersion](db, "qb_accounting.posting_rule_versions")
+	repo, err := qbpostgres.NewRepository[models.PostingRuleVersion](db, "posting_rule_versions")
 	if err != nil {
 		return nil, err
 	}
@@ -612,7 +612,7 @@ type postingRequestRepository struct {
 }
 
 func NewPostingRequestRepository(db qbpostgres.DBHandler) (repository.PostingRequestRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.PostingRequest](db, "qb_accounting.posting_requests")
+	repo, err := qbpostgres.NewRepository[models.PostingRequest](db, "posting_requests")
 	if err != nil {
 		return nil, err
 	}
@@ -686,7 +686,7 @@ type postingRequestSnapshotRepository struct {
 }
 
 func NewPostingRequestSnapshotRepository(db qbpostgres.DBHandler) (repository.PostingRequestSnapshotRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.PostingRequestSnapshot](db, "qb_accounting.posting_request_snapshots")
+	repo, err := qbpostgres.NewRepository[models.PostingRequestSnapshot](db, "posting_request_snapshots")
 	if err != nil {
 		return nil, err
 	}
@@ -723,7 +723,7 @@ type journalSourceLinkRepository struct {
 }
 
 func NewJournalSourceLinkRepository(db qbpostgres.DBHandler) (repository.JournalSourceLinkRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.JournalSourceLink](db, "qb_accounting.journal_source_links")
+	repo, err := qbpostgres.NewRepository[models.JournalSourceLink](db, "journal_source_links")
 	if err != nil {
 		return nil, err
 	}
@@ -768,7 +768,7 @@ type openItemRepository struct {
 }
 
 func NewOpenItemRepository(db qbpostgres.DBHandler) (repository.OpenItemRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.OpenItem](db, "qb_accounting.open_items")
+	repo, err := qbpostgres.NewRepository[models.OpenItem](db, "open_items")
 	if err != nil {
 		return nil, err
 	}
@@ -833,7 +833,7 @@ type openItemAllocationRepository struct {
 }
 
 func NewOpenItemAllocationRepository(db qbpostgres.DBHandler) (repository.OpenItemAllocationRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.OpenItemAllocation](db, "qb_accounting.open_item_allocations")
+	repo, err := qbpostgres.NewRepository[models.OpenItemAllocation](db, "open_item_allocations")
 	if err != nil {
 		return nil, err
 	}
@@ -878,7 +878,7 @@ type openItemAdjustmentRepository struct {
 }
 
 func NewOpenItemAdjustmentRepository(db qbpostgres.DBHandler) (repository.OpenItemAdjustmentRepository, error) {
-	repo, err := qbpostgres.NewRepository[models.OpenItemAdjustment](db, "qb_accounting.open_item_adjustments")
+	repo, err := qbpostgres.NewRepository[models.OpenItemAdjustment](db, "open_item_adjustments")
 	if err != nil {
 		return nil, err
 	}

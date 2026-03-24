@@ -1134,7 +1134,7 @@ const file_setup_proto_rawDesc = "" +
 	"\x0efeature_access\x18\x04 \x03(\v2&.qbsetup.v1.SetupFeatureAccessResponseR\rfeatureAccess\x12O\n" +
 	"\x0ffeature_configs\x18\x05 \x03(\v2&.qbsetup.v1.SetupFeatureConfigResponseR\x0efeatureConfigs2s\n" +
 	"\fSetupService\x12c\n" +
-	"\x12OrganizationConfig\x12%.qbsetup.v1.OrganizationConfigRequest\x1a&.qbsetup.v1.OrganizationConfigResponseB!Z\x1fqb-accounting/internal/proto/setupb\x06proto3"
+	"\x12OrganizationConfig\x12%.qbsetup.v1.OrganizationConfigRequest\x1a&.qbsetup.v1.OrganizationConfigResponseB$Z\"qb-accounting/internal/proto/setupb\x06proto3"
 
 var (
 	file_setup_proto_rawDescOnce sync.Once

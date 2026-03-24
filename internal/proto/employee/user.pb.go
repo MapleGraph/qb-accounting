@@ -565,7 +565,7 @@ const file_user_proto_rawDesc = "" +
 	"\vUserService\x12T\n" +
 	"\x11SetupOrganization\x12\x1e.user.SetupOrganizationRequest\x1a\x1f.user.SetupOrganizationResponse\x126\n" +
 	"\aAddUser\x12\x14.user.AddUserRequest\x1a\x15.user.AddUserResponse\x126\n" +
-	"\aGetUser\x12\x14.user.GetUserRequest\x1a\x15.user.GetUserResponseB$Z\"qb-accounting/internal/proto/employeeb\x06proto3"
+	"\aGetUser\x12\x14.user.GetUserRequest\x1a\x15.user.GetUserResponseB'Z%qb-accounting/internal/proto/employeeb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
