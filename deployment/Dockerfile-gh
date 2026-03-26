@@ -1,0 +1,15 @@
+FROM ubuntu:22.04
+ENV TZ=Asia/Kolkata
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY server .
+RUN groupadd -g 1000 appuser && \
+    useradd -u 1000 -g appuser -m -s /usr/sbin/nologin appuser
+
+USER appuser
+EXPOSE 8080
+CMD ["./server"]
