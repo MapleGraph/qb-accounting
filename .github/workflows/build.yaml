@@ -1,0 +1,102 @@
+name: Build and Create Docker Images
+
+on:
+  push:
+    branches: [ main ] 
+  workflow_dispatch:
+
+jobs: 
+  build:
+    name: Build Image
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-go@v6
+        name: Setup go
+        with: 
+          go-version: '1.25'
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          password: ${{ secrets.GHTOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: Configure Go private modules
+        run: |
+          echo "GOPRIVATE=github.com/MapleGraph/*" >> $GITHUB_ENV
+          git config --global url."https://${{ secrets.GHTOKEN }}@github.com/".insteadOf "https://github.com/"
+        
+      - name: Install go Dependancy
+        run: go mod download 
+        shell: bash
+
+      - name: Build go 
+        run: go build -ldflags="-w -s"  -o server cmd/main.go
+        env:
+          CGO_ENABLED: 1
+          GOARCH: amd64
+          GOOS: linux
+
+      - name: Docker Build and Push
+        shell: bash
+        env:
+          GHCR_REPO_NAME: ${{ github.repository_owner }}
+        run: |
+            set -euo pipefail
+            BUILD_NUMBER="$(date +'%d').$(date +'%m_%y').${{ github.run_number }}"
+            IMAGE="ghcr.io/${GHCR_REPO_NAME,,}/${GITHUB_REPOSITORY##*/}"  
+            echo "$IMAGE:$BUILD_NUMBER"
+            docker buildx build \
+              --file deployment/Dockerfile-gh \
+              --push \
+              --tag "$IMAGE:$BUILD_NUMBER" \
+              --tag "$IMAGE:latest" .
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      GKE_CLUSTER: "qb-gke-cluster-01-dev"
+    steps:
+
+      # Step 1: Authenticate to GCP
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # Step 2: Set up GCP Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID  }}
+
+      # Step 3: Configure kubectl
+      - name: Install GKE auth plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin --quiet
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials "${{ env.GKE_CLUSTER }}" --region=us-central1
+
+      # Step 4: Update the image tag
+      - name: Set image tag
+        env:
+          GHCR_REPO_NAME: ${{ github.repository_owner }}
+        run: |
+           set -euo pipefail
+           BUILD_NUMBER="$(date +'%d').$(date +'%m_%y').${{ github.run_number }}"
+           IMAGE="ghcr.io/${GHCR_REPO_NAME,,}/${GITHUB_REPOSITORY##*/}" 
+           kubectl set image deployment/"${GITHUB_REPOSITORY##*/}" "${GITHUB_REPOSITORY##*/}=$IMAGE:$BUILD_NUMBER" -n dev
+           kubectl rollout status deployment/"${GITHUB_REPOSITORY##*/}" -n dev
