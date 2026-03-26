@@ -38,7 +38,7 @@ jobs:
           git config --global url."https://${{ secrets.GHTOKEN }}@github.com/".insteadOf "https://github.com/"
         
       - name: Install go Dependancy
-        run: go mod download 
+        run: go mod tidy 
         shell: bash
 
       - name: Build go 
