@@ -81,4 +81,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/MapleGraph/qb-core/v2 => ../qb-core
+// replace github.com/MapleGraph/qb-core/v2 => ../qb-core
